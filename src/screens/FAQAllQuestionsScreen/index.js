@@ -4,13 +4,41 @@ import { Menu } from '../../components/commons/Menu';
 import { Box, Text, Link, Image, theme } from '../../theme/components';
 import { cmsService } from '../../infra/cms/cmsService';
 import { pageHOC } from '../../components/wrappers/pageHOC';
+import { CMSSectionRender } from '../../infra/cms/CMSSectionRender';
 
 export async function getStaticProps({ preview }) {
   const { data: cmsContent } = await cmsService({
     query: `
-      query {
-        __typename
+     query {
+      pageFaq {
+        pageContent {
+          section {
+            componentName: __typename
+            ... on CommonSeoBlockRecord {
+              id
+              title
+            }
+            ...on CommonMenuRecord {
+              id
+            }
+            ... on PagefaqDisplayquestionSectionRecord {
+              id
+              categories {
+                id
+                title
+                questions {
+                  title
+                  id
+                }
+              }
+            }
+            ...on CommonFooterRecord {
+              id
+            }
+          }
+        }
       }
+     }
     `,
     preview,
   })
@@ -46,6 +74,13 @@ export async function getStaticProps({ preview }) {
   }
 }
 
+function FAQAllQuestionsScreen() {
+  return (
+    <CMSSectionRender pageName='pageFaq' />
+  )
+}
+
+/*
 function FAQAllQuestionsScreen({ categories }) {
   return (
     <>
@@ -77,7 +112,7 @@ function FAQAllQuestionsScreen({ categories }) {
             marginHorizontal: 'auto',
           }}
         >
-          {/* Block: Title Questions */}
+          
           <Box
             styleSheet={{
               flex: 2,
@@ -110,7 +145,6 @@ function FAQAllQuestionsScreen({ categories }) {
             />
           </Box>
 
-          {/* Block: Questions */}
           <Box
             styleSheet={{
               flex: 3,
@@ -142,5 +176,5 @@ function FAQAllQuestionsScreen({ categories }) {
     </>
   )
 }
-
+*/
 export default pageHOC(FAQAllQuestionsScreen);
