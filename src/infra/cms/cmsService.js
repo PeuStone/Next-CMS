@@ -29,7 +29,7 @@ export async function cmsService({
         })
             .then(async (respostaServidor) => {
                 const body = await respostaServidor.json();
-                console.log('body', body);
+                // console.log('body', body);
                 if (!body.errors) return body;
 
                 throw new Error(JSON.stringify(body));
@@ -47,7 +47,7 @@ export async function cmsService({
         })
             .then(async (respostaServidor) => {
                 const body = await respostaServidor.json();
-                console.log('body', body);
+                // console.log('body', body);
                 if (!body.errors) return body;
 
                 throw new Error(JSON.stringify(body));
